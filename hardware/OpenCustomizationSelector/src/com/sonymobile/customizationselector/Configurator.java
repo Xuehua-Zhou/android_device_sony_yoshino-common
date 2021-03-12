@@ -21,12 +21,13 @@ public class Configurator {
     public static final String KEY_MODEM = "modem";
     public static final String KEY_SIM_ID = "sim_id";
 
-    private static final String OLD_CONFIG_KEY = "config_key";
+    public static final String OLD_CONFIG_KEY = "config_key";
     private static final String PROP_CUST = "ro.semc.version.cust";
     private static final String PROP_CUST_REV = "ro.semc.version.cust_revision";
     private static final String PROP_SIM_CONFIG_ID = "persist.sys.sim_config_ids";
     private static final String PROP_SW = "ro.semc.version.sw";
     private static final String PROP_SW_REV = "ro.semc.version.sw_revision";
+    private static final String PROP_CS_VERSION = "ro.semc.version.opencs";
     public static final String PROP_TA_AC_VERSION = "ro.semc.version.cust.active";
 
     private static final int TA_AC_VERSION = 2212;
@@ -54,7 +55,8 @@ public class Configurator {
 
     private String createCurrentConfigurationKey() {
         String status = SystemProperties.get(PROP_CUST, "") + SystemProperties.get(PROP_CUST_REV, "") +
-                SystemProperties.get(PROP_SW, "") + SystemProperties.get(PROP_SW_REV, "") + getIccid();
+                SystemProperties.get(PROP_SW, "") + SystemProperties.get(PROP_SW_REV, "") +
+                SystemProperties.get(PROP_CS_VERSION, "") + getIccid();
         CSLog.d(TAG, "CurrentConfKey: " + status);
         return status;
     }

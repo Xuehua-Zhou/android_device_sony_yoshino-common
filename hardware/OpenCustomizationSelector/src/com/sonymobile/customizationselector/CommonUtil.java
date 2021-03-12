@@ -15,7 +15,7 @@ import java.util.List;
 
 import static com.sonymobile.customizationselector.Parser.XmlConstants.*;
 
-class CommonUtil {
+public class CommonUtil {
 
     private static final String TAG = CommonUtil.class.getSimpleName();
     private static final int MIN_MCC_MNC_LENGTH = 5;
@@ -46,7 +46,8 @@ class CommonUtil {
         int defaultDataSubscriptionId = SubscriptionManager.getDefaultDataSubscriptionId();
 
         if (!SubscriptionManager.isUsableSubIdValue(defaultDataSubscriptionId)) {
-            List<SubscriptionInfo> activeSubscriptionInfoList = SubscriptionManager.from(context).getActiveSubscriptionInfoList();
+            List<SubscriptionInfo> activeSubscriptionInfoList = context.getSystemService(SubscriptionManager.class)
+                    .getActiveSubscriptionInfoList();
             if (activeSubscriptionInfoList != null) {
                 for (SubscriptionInfo subscriptionInfo : activeSubscriptionInfoList) {
                     if (SubscriptionManager.isUsableSubIdValue(subscriptionInfo.getSubscriptionId())) {
@@ -113,5 +114,21 @@ class CommonUtil {
         }
         CSLog.d(TAG, "isSIMLoaded: false");
         return false;
+    }
+
+    public static String[] getDefaultModems() {
+        return new String[]{"amss_fsg_lilac_tar.mbn",
+                "amss_fsg_poplar_tar.mbn", "amss_fsg_poplar_dsds_tar.mbn",
+                "amss_fsg_maple_tar.mbn", "amss_fsg_maple_dsds_tar.mbn"};
+    }
+
+    public static boolean isModemDefault(String modem) {
+        for (String m : getDefaultModems()) {
+            if (m.equals(modem)) {
+                return true;
+            }
+        }
+        return !modem.contains("ims") && !modem.contains("volte")
+                && !modem.contains("vilte") && !modem.contains("vowifi");
     }
 }
